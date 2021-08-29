@@ -4,16 +4,17 @@ import re
 
 import pytest
 import requests
+from filelock import FileLock
 
 
 # 获取access_token
 @pytest.fixture(scope="session")
 def test_getToken():
     res = None
+    # while FileLock("session.lock"):
     corpid = "wwc21827e63c44f94f"
     corpsecret = "0qjRWh5cnLgJQPUDLB2uHMwJn0h0KgKr93NBbyEDso0"
     res = requests.get(f"https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid={corpid}&corpsecret={corpsecret}")
-    print("getToken")
     return res.json()["access_token"]
 
 
@@ -74,7 +75,7 @@ def test_all(userid, name, mobile, test_getToken):
         if "mobile existed" in e.__str__():
             re_userid = re.findall(":(.*)", e.__str__())[0]
             if re_userid.endswith('"') or re_userid.endswith("'"):
-                #如果re_userid后面存在'or"就截取去除最后一位
+                # 如果re_userid后面存在'or"就截取去除最后一位
                 re_userid = re_userid[:-1]
             # 若存在相同手机号，先获取出来再删除
             assert "deleted" == test_delete_member(re_userid, test_getToken)["errmsg"]
