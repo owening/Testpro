@@ -6,16 +6,12 @@ import yaml
 
 class BaseApi:
 
-    def send(self,data):
-       return requests.request(**data).json()
+    def send_api(self, req: dict):
+        return requests.request(**req).json()
 
-    def template(self,userid,name,mobile):
-        with open("../api/member_request.yaml") as f:
-            req = {
-            "access_token": self.token,
-            "userid": userid,
-            "name": name,
-            "mobile": mobile
-            }
-            req_result = Template(f.read()).substitute(req)
-            return yaml.safe_load(req_result)
+    def template(self, path, data, sub=None):
+        with open(path, encoding="utf-8") as f:
+            if sub is None:
+                return yaml.safe_load(Template(f.read()).substitute(data))
+            else:
+                return yaml.safe_load(Template(yaml.dump(yaml.safe_load(f)[sub])).substitute(data))

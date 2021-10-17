@@ -15,4 +15,4 @@ class WeWork(BaseApi):
                 "corpsecret": corpsecret
             }
         }
-        return self.send(data)["access_token"]
+        return self.send_api(data)["access_token"]
