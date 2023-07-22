@@ -93,3 +93,5 @@ if __name__ == "__main__":
     #添加单个学员
     manager.addStudent(s4)
     manager.getAllStudentInfo()
+
+    print(manager.all_stu_list)
