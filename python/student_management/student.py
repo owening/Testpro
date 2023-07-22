@@ -94,4 +94,3 @@ if __name__ == "__main__":
     manager.addStudent(s4)
     manager.getAllStudentInfo()
 
-    print(manager.all_stu_list)
