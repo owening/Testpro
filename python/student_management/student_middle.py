@@ -30,6 +30,9 @@ class Student:
         self.sex = sex
 
     def __repr__(self):
+        """
+        定义类属性的打印格式
+        """
         return f"学号：{self.id},姓名：{self.name},性别：{self.sex}"
 
 
@@ -97,7 +100,7 @@ if __name__ == "__main__":
     s2 = Student(1002, "丽思", "女")
     s3 = Student(1003, "王武", "男")
     s4 = Student(1004, "溜溜", "女")
-    # 多个Student类对象--->创建列表
+    # 多个Student类对象--->创建集合
     stu_set = {s1, s2, s3}
     # 实例化StudentManagement类对象给manager
     manager = StudentManagement()
