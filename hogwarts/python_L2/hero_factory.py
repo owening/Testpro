@@ -4,7 +4,7 @@
 # @Author  : Owen
 # @File    : hero_factory.py
 # @Software: PyCharm
-from L2.hero_other import APCHero, TopHero, Hero
+from hogwarts.python_L2.hero_other import APCHero, TopHero, Hero
 
 
 class HeroFactory:

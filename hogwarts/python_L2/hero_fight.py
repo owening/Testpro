@@ -4,7 +4,7 @@
 # @Author  : Owen
 # @File    : hero_fight.py
 # @Software: PyCharm
-from L2.hero_other import Hero
+from hogwarts.python_L2.hero_other import Hero
 
 
 def fight(hero1: Hero, hero2: Hero):

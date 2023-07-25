@@ -4,7 +4,7 @@
 # @Author  : Owen
 # @File    : test_fight_function.py
 # @Software: PyCharm
-from python.fight_function import fight
+from hogwarts.python_L2.fight_function import fight
 
 
 def test_fight():

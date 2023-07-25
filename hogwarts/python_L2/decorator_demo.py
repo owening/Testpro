@@ -13,10 +13,11 @@ def param(decorate_param):
         def inner():
             start_time = datetime.datetime.now()
             if decorate_param == True:
+                print("装饰器传惨为：", decorate_param)
                 print("开始执行")
-                print("装饰器传惨为：",decorate_param)
                 func()
                 end_time = datetime.datetime.now()
+                print("执行结束")
                 run_time = end_time - start_time
                 print("执行结束,执行的时长为：", run_time)
             else:
@@ -25,9 +26,9 @@ def param(decorate_param):
     return timer
 
 
-@param(False)
+@param(True)
 def run_function():
-    # sleep()
+    sleep(5)
     print("执行方法啦ing")
 
 
