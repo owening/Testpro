@@ -7,7 +7,6 @@
 @Author ：Owen
 @Date ：2023/7/25 14:26 
 '''
-from typing import Type
 
 import allure
 
