@@ -8,8 +8,9 @@
 @Date ：2023/7/25 16:26 
 '''
 import sys
-
 import pytest
+import allure
+
 
 """
     1.完整的测试流程，包含需求分析、测试计划设计、测试用例编写、测试执行、bug 的提交与管理。
@@ -50,19 +51,25 @@ class TestCalculator():
     def setup_class(self):
         self.calculator = Calculator()
 
-    @pytest.mark.skipif(sys.platform != "win32", reason="在win32上跳过，不执行")  #带条件，满足条件时跳过用例
+
+    @allure.title("测试用例标题,参数：{num1}+{num2} ,结果为：{expected}")
+    @pytest.mark.skipif(sys.platform != "darwin", reason="在mac上跳过，不执行")  #带条件，满足条件时跳过用例
     @pytest.mark.addtest   #自定义测试用例分类标签， pytest.mark.自定义标签名
     @pytest.mark.parametrize("num1,num2,expected", test_add_data,
                              ids=["-98+98=0", "-99+37.68=61.32", "84.06+99=183.06", "-100+26.05=参数超出范围",
                                   "-8+100=参数超出范围",
                                   "-68.26+76.03=7.77", "-99.51+(-68.06)=-167.57"])
-    def test_add1(self, num1, num2, expected):
-        res = self.calculator.add(num1, num2)
-        if type(res) == float:
-            res = round(res, 2)
-        assert res == expected
+    def test_add(self, num1, num2, expected):
+        with allure.step(f"测试步骤一：传入两个参数{num1}和{num2}执行加法计算"):
+            res = self.calculator.add(num1, num2)
+        with allure.step(f"测试步骤二：加法计算结果为{expected}"):
+            if type(res) == float:
+                res = round(res, 2)
+        with allure.step(f"测试步骤三：进行断言"):
+            assert res == expected
 
-    # #错误数据类型场景
+    # 异常捕获处理场景
+    @allure.title("更新前用例标题：加法异常处理场景")
     @pytest.mark.xfail(raises=TypeError,reason="这是预期失败原因描述")  #标记为预期失败用例
     @pytest.mark.testfail
     @pytest.mark.parametrize("num1,num2,expected", [["test1", "test2", "test3"]])
@@ -72,6 +79,7 @@ class TestCalculator():
             res = self.calculator.add(num1, num2)
             print("打印：", res)
             assert res != expected
+            allure.dynamic.title("更新后的用例标题：加法的异常处理场景")
 
 
 
@@ -80,14 +88,22 @@ class TestCalculator():
     @pytest.mark.parametrize("num1,num2,expected", test_div_data,
                              ids=["-98/98=-1", "-99/37.68=-2.63", "84.06/99=0.85", "-100/26.05=参数超出范围", "-8/100=参数超出范围",
                                   "-68.26/76.03=-0.9", "-99.51/(-68.06)=1.45"])
-    def test_div1(self, num1, num2, expected):
-        res = self.calculator.div(num1, num2)
-        if type(res) == float:
-            res = round(res, 2)
-        assert res == expected
+    def test_div(self, num1, num2, expected):
+        with allure.step(f"测试步骤一：传入两个参数{num1}和{num2}执行除法计算"):
+            res = self.calculator.div(num1, num2)
+        with allure.step(f"测试步骤二：除法计算结果为{expected}算"):
+            if type(res) == float:
+                res = round(res, 2)
+        with allure.step(f"测试步骤三：进行断言"):
+            assert res == expected
 
-# #错误数据类型场景
-# def test_add(self):
-#     num1,num2,expected = "test1", "test2", "test3"
-#     res = self.calculator.div(num1, num2)
-#     assert res != expected
+# #异常处理场景
+    @allure.title("自定义测试用例标题，除法-异常处理场景")
+    @pytest.mark.parametrize("num1, num2",[[5,0]])
+    def test_exc_div(self,num1, num2):
+        with pytest.raises(ZeroDivisionError) as exc_info:
+            self.calculator.div(num1, num2)
+        assert exc_info.type == ZeroDivisionError
+        assert exc_info.value.args[0] == "division by zero"
+
+
